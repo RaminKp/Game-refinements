@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SEA OF SECRETS</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'ocean_explore/css/style.css' %}">
+</head>
+<body>
+  <!-- Splash Screen -->
+  <div id="splash-screen"
+     style="background-image: url('{% static 'ocean_explore/images/background_Image.jpg' %}'); background-size: cover; background-position: center;">
+    <h1>SEA OF SECRETS</h1>
+    <p>Made by Het Vaghani and Samrapth</p>
+    <button id="enter-game-btn">Dive In</button>
+  </div>
+
+  <!-- Audio -->
+  <audio id="bg-music" loop></audio>
+  <audio id="submarine-sound" loop></audio>
+
+  <!-- GAME UI (hidden initially) -->
+  <div id="game-ui" style="display: none;">
+    <!-- Compass -->
+    <div id="compass">
+  <img src="{% static 'ocean_explore/images/compass.png' %}" alt="Compass" />
+  </div>
+    <!-- Score -->
+    <div id="score-display" style="display: none;">Score: 0</div>
+
+    <!-- Depth Indicator -->
+    <div id="depth-indicator">Depth: 0 m</div>
+
+    <!-- Game Container -->
+    <div id="game-container">
+      <!-- Submarine -->
+      <div id="submarine">
+        <img src="{% static 'ocean_explore/images/submarine.png' %}" alt="Submarine">
+      </div>
+      <!-- Creatures & Text -->
+      <div id="content-container"></div>
+    </div>
+
+    <!-- Blinking Spots -->
+    <div id="blinking-spots"></div>
+  </div>
+
+  <!-- Fact Popup -->
+  <div id="fact-popup" class="modal">
+    <div class="modal-content" id="fact-content">
+      <span class="close" id="close-fact">&times;</span>
+      <div id="fact-text"></div>
+    </div>
+  </div>
+
+  <!-- Quiz Modal -->
+  <div id="quiz-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close">&times;</span>
+      <h2>Quiz Time!</h2>
+      <p id="quiz-question"></p>
+      <input type="text" id="quiz-answer" placeholder="Type your answer">
+      <button id="mic-btn">🎤</button>
+      <button id="camera-btn">📷</button>
+      <button id="submit-quiz">Submit Answer</button>
+    </div>
+  </div>
+
+  <!-- QR Scan Modal -->
+  <div id="qr-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="close-qr">&times;</span>
+      <div id="qr-reader" style="width: 300px; margin: 0 auto;"></div>
+    </div>
+  </div>
+
+  <!-- User Info Modal -->
+  <div id="user-info" class="modal">
+    <div class="modal-content name-modal">
+      <h2>Enter Your Name</h2>
+      <input type="text" id="user-name" placeholder="Your Name">
+      <button id="name-mic-btn">🎤</button>
+      <button id="start-game">Start Game</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <script src="{% static 'ocean_explore/js/script.js' %}"></script>
+</body>
+</html>
