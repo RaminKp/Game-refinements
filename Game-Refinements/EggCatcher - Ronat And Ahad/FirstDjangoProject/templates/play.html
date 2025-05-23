@@ -45,6 +45,7 @@
 
     .back-btn:hover {
       transform: scale(1.1);
+      transform: translate(-50%) scale(1.1);
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
@@ -197,10 +198,10 @@
 
     function drawBasket() {
       ctx.save();
-      ctx.font = "60px Chewy, sans-serif";
+      ctx.font = "40px Chewy, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("🛒", basketX + basketWidth / 2, canvas.height - basketHeight / 2);
+      ctx.fillText("🗑️", basketX + basketWidth / 2, canvas.height - basketHeight / 2);
       ctx.restore();
     }
 
