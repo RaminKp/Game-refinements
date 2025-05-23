@@ -5,6 +5,7 @@ const step = 20;         // arrow key movement in px (2m per press to make it a 
 let userName = '';
 let score = 0;
 let encounteredCreatures = []; // store names of creatures within or at current depth for quiz
+let visitedCreatures = new Set();
 
 function logEvent(eventData) {
   const timestamp = new Date().toISOString();
@@ -223,7 +224,7 @@ const creaturesData = [
   },
   {
     name: "Giant Tube Worm",
-    depth: 1600,
+    depth: 1630,
     weight: "650 g",
     lifespan: "100-300 years",
     image: "giant_tube_worm.png",
@@ -354,11 +355,20 @@ const specialTexts = [
 
 // 1) Hide splash screen on button click
 enterGameBtn.addEventListener('click', () => {
-  splashScreen.style.display = 'none';
-  userInfoModal.style.display = 'block';
 
-  // Hide game UI until game starts
-  document.getElementById('game-ui').style.display = 'none';
+
+  splashScreen.style.display = 'none';
+  document.getElementById('game-ui').style.display = 'block';
+
+    const bgMusic = document.getElementById('bg-music');
+    bgMusic.src = "static/ocean_explore/audio/ocean bg.m4a";
+    bgMusic.play();
+  
+    subSound.src = "static/ocean_explore/audio/submarine bg2.m4a";
+    subSound.play();
+  
+    compass.style.display = 'block';
+    scoreDisplay.style.display = 'block';
 
   logEvent({
   screen: 'Home Page',
@@ -366,39 +376,38 @@ enterGameBtn.addEventListener('click', () => {
   message: 'User clicked Dive In'
   });
 
-  speak("Enter your name and don't wait to explore. Instructions are simple just navigate through arrow keys and touch creature for their fact and answer fact every few meters to explore ahead");
 });
 
 
 // 2) Start game after user enters name
-startGameBtn.addEventListener('click', () => {
-  let nameVal = userNameInput.value.trim();
-  if (!nameVal) {
-    alert("Please enter your name.");
-    return;
-  }
-  userName = nameVal;
+// startGameBtn.addEventListener('click', () => {
+//   let nameVal = userNameInput.value.trim();
+//   if (!nameVal) {
+//     alert("Please enter your name.");
+//     return;
+//   }
+//   userName = nameVal;
 
-  logEvent({
-  screen: 'Level 1',
-  action: 'Start Game',
-  message: `Game started by ${userName}`
-});
+//   logEvent({
+//   screen: 'Level 1',
+//   action: 'Start Game',
+//   message: `Game started by ${userName}`
+// });
 
-  userInfoModal.style.display = 'none';
+//   userInfoModal.style.display = 'none';
 
-  document.getElementById('game-ui').style.display = 'block';
+//   document.getElementById('game-ui').style.display = 'block';
 
-  const bgMusic = document.getElementById('bg-music');
-  bgMusic.src = "static/ocean_explore/audio/ocean bg.m4a";
-  bgMusic.play();
+//   const bgMusic = document.getElementById('bg-music');
+//   bgMusic.src = "static/ocean_explore/audio/ocean bg.m4a";
+//   bgMusic.play();
 
-  subSound.src = "static/ocean_explore/audio/submarine bg2.m4a";
-  subSound.play();
+//   subSound.src = "static/ocean_explore/audio/submarine bg2.m4a";
+//   subSound.play();
 
-  compass.style.display = 'block';
-  scoreDisplay.style.display = 'block';
-});
+//   compass.style.display = 'block';
+//   scoreDisplay.style.display = 'block';
+// });
 
 
 // 3) Create creature elements
@@ -495,7 +504,7 @@ function checkQuizTrigger(currentDepth) {
 
 // Listen for arrow keys
 document.addEventListener('keydown', (e) => {
-  if (quizModal.style.display === 'block' || userInfoModal.style.display === 'block') return;
+  if (quizModal.style.display === 'block') return;
 
   let moved = false;
   if (e.key === 'ArrowUp') {
@@ -569,7 +578,9 @@ function checkCollisions() {
       subRect.top < rect.top + rect.height &&
       subRect.top + subRect.height > rect.top
     ) {
-      if (!foundCollision) {
+      // Only show fact if we haven't visited this creature before
+      if (!foundCollision && !visitedCreatures.has(creatureEl.dataset.name)) {
+        visitedCreatures.add(creatureEl.dataset.name);
         showCreatureFact(creatureEl);
         foundCollision = true;
       }
@@ -747,9 +758,9 @@ function getCSRFToken() {
   return cookieValue;
 }
 
-nameMicBtn.addEventListener('click', () => {
-  startSpeechRecognition(userNameInput);
-});
+// nameMicBtn.addEventListener('click', () => {
+//   startSpeechRecognition(userNameInput);
+// });
 
 function moveSubmarine() {
   // Update submarine position
