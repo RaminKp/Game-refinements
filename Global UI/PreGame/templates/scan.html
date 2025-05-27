@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +8,7 @@
         body {
             text-align: center;
             font-family: Arial;
-            background-color: #f0f0f0;
+            background-color: #fffed4;
         }
         h1 {
             margin-top: 30px;
@@ -30,7 +31,20 @@
 <body>
     <h1>Please scan your ID</h1>
     <div id="video-container">
-        <img src="{% url 'video_feed' %}" />
+        <img src="{% url 'video_feed' %}"/>
     </div>
+
+<script>
+    setInterval(() => {
+        fetch("{% url 'check_marker' %}")
+        .then(response => response.json())
+        .then(data => {
+            if (data.detected) {
+            window.location.href = "{% url 'games_page' %}";
+            }
+        });
+    }, 1000);
+</script>
+        
 </body>
 </html>
